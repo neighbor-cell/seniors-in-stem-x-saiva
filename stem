@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mind Garden — Brain Games for Seniors</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1C1710;--ink2:#5C4F3A;--ink3:#9C8E78;
+  --paper:#FAF7F0;--parchment:#F2EBD9;--linen:#E8DEC8;
+  --moss:#4A6741;--mossl:#D4E8C8;--mossd:#2E4228;
+  --amber:#C47A2A;--amberl:#F5E8CC;--amberd:#8A5218;
+  --rose:#B85C5C;--rosel:#F5DADA;
+  --r:16px;--rsm:10px;
+  --sh:0 4px 24px rgba(28,23,16,.10);
+  --shs:0 2px 8px rgba(28,23,16,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:18px;scroll-behavior:smooth;}
+body{background:var(--paper);color:var(--ink);font-family:'Outfit',sans-serif;line-height:1.6;min-height:100vh;}
+.skip{position:absolute;top:-120px;left:0;background:var(--moss);color:#fff;padding:.5rem 1.2rem;font-weight:600;z-index:9999;border-radius:0 0 10px 0;}
+.skip:focus{top:0;}
+header{background:linear-gradient(135deg,var(--mossd),var(--moss));padding:1.3rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8rem;}
+.logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:#fff;font-weight:600;}
+.logo em{color:#B8D8A0;font-style:italic;}
+.a11y-bar{display:flex;gap:.5rem;flex-wrap:wrap;}
+.a11y-btn{background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.35);border-radius:8px;padding:.35rem .9rem;font-size:.82rem;font-family:'Outfit',sans-serif;color:#fff;cursor:pointer;font-weight:500;transition:all .15s;}
+.a11y-btn:hover,.a11y-btn:focus{background:rgba(255,255,255,.28);outline:2px solid #B8D8A0;outline-offset:2px;}
+.a11y-btn.on{background:#B8D8A0;color:var(--mossd);border-color:#B8D8A0;}
+.hero{background:linear-gradient(135deg,var(--mossd),var(--moss));padding:2.5rem 2rem 4.5rem;text-align:center;position:relative;overflow:hidden;}
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:50px;background:var(--paper);clip-path:ellipse(60% 100% at 50% 100%);}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:2.6rem;color:#fff;font-weight:600;margin-bottom:.5rem;position:relative;}
+.hero p{color:#C8E0B0;font-size:.95rem;max-width:460px;margin:0 auto;font-weight:300;position:relative;}
+main{max-width:900px;margin:0 auto;padding:2rem 1.2rem 5rem;}
+.game-nav{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.8rem;margin-bottom:2rem;}
+.gnb{background:var(--paper);border:2px solid var(--linen);border-radius:var(--r);padding:1rem .8rem;cursor:pointer;text-align:center;font-family:'Outfit',sans-serif;transition:all .2s;position:relative;box-shadow:var(--shs);}
+.gnb:hover,.gnb:focus{border-color:var(--moss);background:var(--mossl);transform:translateY(-2px);box-shadow:var(--sh);outline:3px solid var(--moss);outline-offset:2px;}
+.gnb.active{border-color:var(--mossd);background:var(--mossl);border-width:2.5px;box-shadow:var(--sh);}
+.gicon{font-size:1.8rem;margin-bottom:.3rem;display:block;}
+.glabel{font-size:.86rem;font-weight:700;color:var(--ink);display:block;}
+.gdesc{font-size:.71rem;color:var(--ink3);display:block;margin-top:2px;}
+.gbadge{position:absolute;top:-8px;right:-8px;background:var(--amber);color:#fff;font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:20px;}
+.panel{display:none;background:var(--paper);border:1.5px solid var(--linen);border-radius:var(--r);padding:1.8rem 1.6rem;box-shadow:var(--sh);animation:sIn .22s ease;}
+.panel.active{display:block;}
+@keyframes sIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.ptitle{font-family:'Cormorant Garamond',serif;font-size:1.85rem;color:var(--ink);margin-bottom:.2rem;font-weight:600;}
+.psub{font-size:.83rem;color:var(--ink3);margin-bottom:1.1rem;font-style:italic;}
+.instr{background:var(--amberl);border-left:4px solid var(--amber);padding:.85rem 1rem;border-radius:0 var(--rsm) var(--rsm) 0;margin-bottom:1.4rem;font-size:.87rem;color:var(--ink2);line-height:1.6;}
+.instr strong{color:var(--ink);}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:.62rem 1.25rem;border:2px solid var(--linen);border-radius:var(--rsm);background:var(--parchment);color:var(--ink);font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .15s;}
+.btn:hover,.btn:focus{background:var(--mossl);border-color:var(--moss);outline:3px solid var(--moss);outline-offset:2px;}
+.bgreen{background:var(--moss);color:#fff;border-color:var(--mossd);}
+.bgreen:hover,.bgreen:focus{background:var(--mossd);}
+.bamber{background:var(--amber);color:#fff;border-color:var(--amberd);}
+.bamber:hover,.bamber:focus{background:var(--amberd);}
+.brow{display:flex;gap:.7rem;flex-wrap:wrap;justify-content:center;margin-top:1.1rem;}
+.msg{padding:.9rem 1.1rem;border-radius:var(--rsm);font-size:.9rem;font-weight:600;margin-top:1rem;text-align:center;display:none;animation:pop .2s ease;}
+@keyframes pop{from{transform:scale(.96)}to{transform:scale(1)}}
+.msg.ok{background:var(--mossl);color:var(--mossd);border:2px solid var(--moss);}
+.msg.no{background:var(--rosel);color:var(--rose);border:2px solid var(--rose);}
+.msg.show{display:block;}
+.stats{display:flex;gap:.7rem;margin-bottom:1.3rem;flex-wrap:wrap;}
+.stat{flex:1;min-width:70px;background:var(--parchment);border-radius:var(--rsm);padding:.72rem;text-align:center;border:1px solid var(--linen);}
+.snum{font-size:1.55rem;font-weight:700;color:var(--mossd);font-family:'Cormorant Garamond',serif;}
+.slbl{font-size:.7rem;color:var(--ink3);margin-top:2px;font-weight:500;}
+.pgwrap{margin-top:1rem;}
+.pglbl{font-size:.77rem;color:var(--ink3);margin-bottom:4px;font-weight:500;}
+.pgbar{height:8px;background:var(--linen);border-radius:4px;overflow:hidden;}
+.pgfill{height:100%;background:linear-gradient(90deg,var(--moss),var(--mossd));border-radius:4px;transition:width .4s;}
+/* SUDOKU */
+.sugrid{display:grid;grid-template-columns:repeat(9,1fr);background:var(--ink);gap:1px;border:3px solid var(--ink);max-width:378px;margin:0 auto 1rem;overflow-x:auto;}
+.sc{background:#fff;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:var(--ink);cursor:pointer;border:none;width:100%;font-family:'Outfit',sans-serif;}
+.sc.given{color:var(--mossd);background:var(--mossl);}
+.sc.sel{background:#FFFBEB;outline:3px solid var(--amber);outline-offset:-2px;}
+.sc.err{background:var(--rosel);color:var(--rose);}
+.sc.br{border-right:2.5px solid var(--ink);}
+.sc.bb{border-bottom:2.5px solid var(--ink);}
+.numpad{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:.85rem 0;}
+.np{width:45px;height:45px;border:2px solid var(--linen);border-radius:8px;background:var(--parchment);font-size:1.1rem;font-weight:700;cursor:pointer;color:var(--ink);font-family:'Outfit',sans-serif;transition:all .15s;}
+.np:hover,.np:focus{background:var(--mossl);border-color:var(--moss);outline:2px solid var(--moss);outline-offset:2px;}
+/* MEMORY */
+.mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:440px;margin:0 auto 1.2rem;}
+.mc{aspect-ratio:1;border-radius:12px;border:2px solid var(--linen);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:2rem;background:var(--mossd);transition:transform .18s,background .18s;user-select:none;box-shadow:var(--shs);}
+.mc:hover{transform:scale(1.04);}
+.mc:focus{outline:4px solid var(--amber);outline-offset:2px;}
+.mc.fd{font-size:0;background:linear-gradient(135deg,var(--mossd),var(--moss));}
+.mc.fd::after{content:'🌿';font-size:1.3rem;}
+.mc.fu{background:#fff;}
+.mc.matched{background:var(--mossl);border-color:var(--moss);pointer-events:none;transform:none;}
+/* TRIVIA */
+.qtext{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--ink);margin-bottom:1.1rem;line-height:1.45;}
+.qopts{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin-bottom:1rem;}
+@media(max-width:480px){.qopts{grid-template-columns:1fr;}}
+.opt{background:var(--parchment);border:2px solid var(--linen);border-radius:var(--rsm);padding:.8rem 1rem;text-align:left;font-size:.88rem;font-family:'Outfit',sans-serif;color:var(--ink);cursor:pointer;transition:all .18s;font-weight:500;line-height:1.4;}
+.opt:hover,.opt:focus{background:var(--mossl);border-color:var(--moss);outline:2px solid var(--moss);outline-offset:2px;}
+.opt.correct{background:var(--mossl);border-color:var(--mossd);color:var(--mossd);}
+.opt.wrong{background:var(--rosel);border-color:var(--rose);color:var(--rose);}
+.opt:disabled{cursor:default;}
+.qctr{font-size:.78rem;color:var(--ink3);margin-bottom:.5rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;}
+/* MATH */
+.matheq{font-family:'Cormorant Garamond',serif;font-size:2.6rem;font-weight:600;text-align:center;padding:1.3rem;background:var(--parchment);border-radius:var(--r);margin-bottom:1rem;color:var(--ink);border:2px solid var(--linen);}
+.mathop{color:var(--amberd);}
+.mathb{color:var(--moss);}
+.mathinp{width:130px;font-size:1.5rem;text-align:center;padding:.6rem;border:2px solid var(--linen);border-radius:var(--rsm);background:#fff;color:var(--ink);font-family:'Cormorant Garamond',serif;display:block;margin:0 auto .5rem;}
+.mathinp:focus{outline:3px solid var(--moss);border-color:var(--moss);}
+.diffrow{display:flex;gap:.5rem;justify-content:center;margin-bottom:1.2rem;}
+.diffbtn{padding:.48rem 1.1rem;border:2px solid var(--linen);border-radius:20px;background:var(--parchment);font-size:.83rem;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;color:var(--ink);transition:all .15s;}
+.diffbtn.on{background:var(--moss);color:#fff;border-color:var(--mossd);}
+/* WORD BUILDER */
+.wbtiles{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin:1rem 0;}
+.wbl{width:50px;height:50px;background:linear-gradient(135deg,var(--moss),var(--mossd));color:#fff;border:2px solid var(--mossd);border-radius:10px;font-size:1.3rem;font-weight:700;cursor:pointer;font-family:'Cormorant Garamond',serif;display:flex;align-items:center;justify-content:center;transition:all .15s;box-shadow:0 3px 8px rgba(46,66,40,.22);}
+.wbl:hover,.wbl:focus{transform:translateY(-2px);box-shadow:0 5px 12px rgba(46,66,40,.32);outline:2px solid var(--amber);outline-offset:2px;}
+.wbl.used{background:var(--linen);color:var(--ink3);border-color:var(--linen);cursor:default;box-shadow:none;transform:none;}
+.wbcur{font-size:1.9rem;font-weight:700;letter-spacing:9px;text-align:center;min-height:3rem;padding:.55rem;background:var(--parchment);border-radius:var(--r);border:2px solid var(--linen);margin-bottom:.75rem;font-family:'Cormorant Garamond',serif;color:var(--ink);}
+.wbfound{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem;min-height:2rem;}
+.wbword{background:var(--mossl);color:var(--mossd);border:1.5px solid var(--moss);border-radius:20px;padding:3px 11px;font-size:.81rem;font-weight:600;animation:pop .2s ease;}
+/* WORD SEARCH */
+.wsgrid{display:inline-grid;gap:2px;background:var(--linen);border:2px solid var(--linen);border-radius:var(--rsm);overflow:hidden;}
+.wscell{width:33px;height:33px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:.88rem;font-weight:700;cursor:pointer;color:var(--ink);user-select:none;transition:background .12s;font-family:'Outfit',sans-serif;}
+.wscell:hover{background:var(--amberl);}
+.wscell.sel{background:var(--amberl);color:var(--amberd);}
+.wscell.found{background:var(--mossl);color:var(--mossd);}
+.wswordlist{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;}
+.wsword{padding:4px 13px;border:2px solid var(--linen);border-radius:20px;font-size:.83rem;font-weight:600;color:var(--ink2);background:var(--parchment);}
+.wsword.found{background:var(--mossl);color:var(--mossd);border-color:var(--moss);text-decoration:line-through;}
+/* PATTERN MEMORY */
+.pmgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:270px;margin:0 auto 1.2rem;}
+.pmcell{aspect-ratio:1;border-radius:12px;border:2px solid var(--linen);cursor:pointer;background:var(--parchment);transition:all .15s;box-shadow:var(--shs);}
+.pmcell:hover,.pmcell:focus{border-color:var(--moss);outline:2px solid var(--moss);outline-offset:2px;}
+.pmcell.lit{background:var(--amber);border-color:var(--amberd);box-shadow:0 0 18px rgba(196,122,42,.5);}
+.pmcell.pressed{background:#5B9BD5;border-color:#2E6DA4;box-shadow:0 0 14px rgba(91,155,213,.4);}
+.pmcell.cflash{background:var(--moss);border-color:var(--mossd);}
+.pmcell.wflash{background:var(--rose);border-color:var(--rose);}
+.pmphase{font-size:.98rem;font-weight:600;text-align:center;padding:.65rem 1rem;background:var(--parchment);border:1px solid var(--linen);border-radius:var(--rsm);margin-bottom:1rem;color:var(--ink2);}
+/* CROSSWORD */
+.cwgrid{display:inline-grid;gap:2px;background:var(--ink);border:3px solid var(--ink);}
+.cwc{width:36px;height:36px;background:#fff;position:relative;}
+.cwc.black{background:var(--ink);}
+.cwc input{width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:.98rem;font-weight:700;text-transform:uppercase;color:var(--ink);font-family:'Outfit',sans-serif;outline:none;padding:0;cursor:pointer;}
+.cwc input:focus{background:#FFFBEB;}
+.cwc input.ok{color:var(--mossd);}
+.cwc input.bad{color:var(--rose);background:var(--rosel);}
+.cwnum{position:absolute;top:1px;left:2px;font-size:7.5px;color:var(--ink3);line-height:1;pointer-events:none;font-weight:700;}
+.clues{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-top:1.1rem;}
+@media(max-width:500px){.clues{grid-template-columns:1fr;}}
+.cgrp h3{font-size:.78rem;font-weight:700;color:var(--ink3);margin-bottom:.55rem;text-transform:uppercase;letter-spacing:1.5px;}
+.ci{font-size:.87rem;color:var(--ink);margin-bottom:.42rem;line-height:1.4;}
+.ci span{color:var(--ink3);font-weight:700;}
+footer{background:var(--parchment);border-top:1px solid var(--linen);text-align:center;padding:2rem 1rem;color:var(--ink3);font-size:.79rem;}
+footer strong{color:var(--ink2);}
+/* LARGE TEXT */
+body.large{font-size:22px;}
+body.large .sc{font-size:1.2rem;}
+body.large .np{width:54px;height:54px;font-size:1.3rem;}
+body.large .opt{font-size:1rem;padding:1rem;}
+body.large .matheq{font-size:3rem;}
+body.large .wscell{width:38px;height:38px;}
+/* HIGH CONTRAST */
+body.hc{--paper:#0a0a0a;--parchment:#1a1a1a;--linen:#333;--ink:#fff;--ink2:#ddd;--ink3:#aaa;--moss:#4CD964;--mossl:#0a2a10;--mossd:#4CD964;--amber:#FFB347;--amberl:#2a1800;--amberd:#FFB347;--rose:#FF6B6B;--rosel:#2a0808;}
+body.hc header,body.hc .hero{background:#111;}
+body.hc .mc.fd{background:#333;}
+body.hc .sugrid,.body.hc .cwgrid{background:#fff;}
+@media(max-width:520px){
+  html{font-size:16px;}
+  .hero h1{font-size:1.9rem;}
+  .panel{padding:1.2rem 1rem;}
+  .matheq{font-size:2rem;}
+  .wbcur{font-size:1.4rem;letter-spacing:6px;}
+}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to games</a>
+<header role="banner">
+  <div class="logo">🌿 Mind <em>Garden</em></div>
+  <nav class="a11y-bar" aria-label="Accessibility">
+    <button class="a11y-btn" id="btn-large" onclick="toggleLarge()" aria-pressed="false">Larger text</button>
+    <button class="a11y-btn" id="btn-hc" onclick="toggleHC()" aria-pressed="false">High contrast</button>
+  </nav>
+</header>
+<div class="hero">
+  <h1>Brain Games for Seniors</h1>
+  <p>Eight free activities to keep your mind sharp. No sign-up, no cost, play anytime on any device.</p>
+</div>
+<main id="main">
+  <nav class="game-nav" aria-label="Choose a game">
+    <button class="gnb active" onclick="showGame('sudoku',this)"><span class="gicon">🔢</span><span class="glabel">Sudoku</span><span class="gdesc">Fill the grid</span></button>
+    <button class="gnb" onclick="showGame('memory',this)"><span class="gicon">🃏</span><span class="glabel">Memory Match</span><span class="gdesc">Find the pairs</span></button>
+    <button class="gnb" onclick="showGame('trivia',this)"><span class="gicon">💡</span><span class="glabel">Trivia</span><span class="gdesc">Test your knowledge</span></button>
+    <button class="gnb" onclick="showGame('math',this)"><span class="gicon">🧮</span><span class="glabel">Math</span><span class="gdesc">Quick calculations</span></button>
+    <button class="gnb" onclick="showGame('words',this)"><span class="gicon">🔤</span><span class="glabel">Word Builder</span><span class="gdesc">Make words</span><span class="gbadge">NEW</span></button>
+    <button class="gnb" onclick="showGame('wordsearch',this)"><span class="gicon">🔍</span><span class="glabel">Word Search</span><span class="gdesc">Find hidden words</span><span class="gbadge">NEW</span></button>
+    <button class="gnb" onclick="showGame('pattern',this)"><span class="gicon">🟡</span><span class="glabel">Pattern Memory</span><span class="gdesc">Repeat the sequence</span><span class="gbadge">NEW</span></button>
+    <button class="gnb" onclick="showGame('crossword',this)"><span class="gicon">📝</span><span class="glabel">Crossword</span><span class="gdesc">Solve the clues</span></button>
+  </nav>
+
+  <!-- SUDOKU -->
+  <section id="panel-sudoku" class="panel active" aria-label="Sudoku">
+    <h2 class="ptitle">Sudoku</h2>
+    <p class="psub">A classic logic puzzle — great for warming up your brain</p>
+    <div class="instr"><strong>How to play:</strong> Click any blank square, then tap a number below to fill it in. Every row, column, and 3x3 box must use each number 1-9 exactly once. Green squares are given clues you cannot change.</div>
+    <div style="overflow-x:auto"><div class="sugrid" id="sugrid" role="grid"></div></div>
+    <div class="numpad" id="numpad" role="group" aria-label="Number pad"></div>
+    <div class="brow">
+      <button class="btn" onclick="clearSudoku()">Clear all</button>
+      <button class="btn bgreen" onclick="checkSudoku()">Check answers</button>
+    </div>
+    <div id="su-msg" class="msg" role="alert" aria-live="polite"></div>
+    <div class="pgwrap"><div class="pglbl" id="su-lbl">Progress: 0 of 51 filled</div><div class="pgbar"><div class="pgfill" id="su-pg" style="width:0%"></div></div></div>
+  </section>
+
+  <!-- MEMORY -->
+  <section id="panel-memory" class="panel" aria-label="Memory Match">
+    <h2 class="ptitle">Memory Match</h2>
+    <p class="psub">Flip cards and find all 8 matching pairs</p>
+    <div class="instr"><strong>How to play:</strong> Click any card to flip it over and reveal the picture. Then click another card. If the two pictures match, they stay face-up! If not, they flip back over. Find all 8 pairs to win.</div>
+    <div class="stats" role="status" aria-live="polite">
+      <div class="stat"><div class="snum" id="mem-moves">0</div><div class="slbl">Moves</div></div>
+      <div class="stat"><div class="snum" id="mem-pairs">0</div><div class="slbl">Pairs found</div></div>
+      <div class="stat"><div class="snum" id="mem-best">--</div><div class="slbl">Best score</div></div>
+    </div>
+    <div class="mgrid" id="mgrid" role="grid"></div>
+    <div class="brow"><button class="btn bgreen" onclick="initMemory()">New game</button></div>
+    <div id="mem-msg" class="msg" role="alert" aria-live="polite"></div>
+  </section>
+
+  <!-- TRIVIA -->
+  <section id="panel-trivia" class="panel" aria-label="Trivia">
+    <h2 class="ptitle">Trivia Challenge</h2>
+    <p class="psub">History, nature, science, and everyday life</p>
+    <div class="instr"><strong>How to play:</strong> Read each question and click the answer you think is correct. You will find out straight away whether you are right. Build up your streak to show off your knowledge!</div>
+    <div class="stats" role="status" aria-live="polite">
+      <div class="stat"><div class="snum" id="tv-score">0</div><div class="slbl">Score</div></div>
+      <div class="stat"><div class="snum" id="tv-streak">0</div><div class="slbl">Streak</div></div>
+    </div>
+    <div class="qctr" id="tv-ctr">Question 1 of 12</div>
+    <div class="qtext" id="tv-q" aria-live="polite">Loading...</div>
+    <div class="qopts" id="tv-opts" role="group" aria-label="Answer choices"></div>
+    <div id="tv-msg" class="msg" role="alert" aria-live="polite"></div>
+    <div class="brow"><button class="btn bgreen" id="tv-next" onclick="nextTrivia()" style="display:none">Next question</button></div>
+    <div class="pgwrap"><div class="pglbl" id="tv-pglbl">0 of 12 answered</div><div class="pgbar"><div class="pgfill" id="tv-pg" style="width:0%"></div></div></div>
+  </section>
+
+  <!-- MATH -->
+  <section id="panel-math" class="panel" aria-label="Math Puzzles">
+    <h2 class="ptitle">Math Puzzles</h2>
+    <p class="psub">Keep your number skills sharp with quick equations</p>
+    <div class="instr"><strong>How to play:</strong> Look at the equation and type the missing answer in the box. Press Enter or click Submit to check. Pick your difficulty level below -- Easy is a great place to start!</div>
+    <div class="stats">
+      <div class="stat"><div class="snum" id="math-score">0</div><div class="slbl">Correct</div></div>
+      <div class="stat"><div class="snum" id="math-streak">0</div><div class="slbl">Streak</div></div>
+      <div class="stat"><div class="snum" id="math-best">0</div><div class="slbl">Best streak</div></div>
+    </div>
+    <div class="diffrow" role="group" aria-label="Difficulty level">
+      <button class="diffbtn on" id="d-easy" onclick="setDiff('easy',this)">Easy</button>
+      <button class="diffbtn" id="d-med" onclick="setDiff('medium',this)">Medium</button>
+      <button class="diffbtn" id="d-hard" onclick="setDiff('hard',this)">Hard</button>
+    </div>
+    <div class="matheq" id="math-eq" aria-live="polite">Loading...</div>
+    <label for="math-inp" style="display:block;text-align:center;font-weight:600;margin-bottom:.4rem;font-size:.88rem;">Your answer:</label>
+    <input class="mathinp" id="math-inp" type="number" aria-label="Type your answer" placeholder="?" />
+    <div class="brow">
+      <button class="btn" onclick="skipMath()">Skip</button>
+      <button class="btn bgreen" onclick="checkMath()">Submit answer</button>
+    </div>
+    <div id="math-msg" class="msg" role="alert" aria-live="polite"></div>
+  </section>
+
+  <!-- WORD BUILDER -->
+  <section id="panel-words" class="panel" aria-label="Word Builder">
+    <h2 class="ptitle">Word Builder</h2>
+    <p class="psub">How many words can you build from these letters?</p>
+    <div class="instr"><strong>How to play:</strong> Click the letter tiles to spell a word -- the letters appear in the box above. Words must be 3 or more letters. Longer words earn bonus points! Click Submit to check, or Clear to start over.</div>
+    <div class="stats">
+      <div class="stat"><div class="snum" id="wb-words">0</div><div class="slbl">Words found</div></div>
+      <div class="stat"><div class="snum" id="wb-pts">0</div><div class="slbl">Points</div></div>
+    </div>
+    <p style="text-align:center;font-size:.84rem;color:var(--ink3);margin-bottom:.4rem;font-style:italic" id="wb-target">Find words using these letters:</p>
+    <div class="wbcur" id="wbcur" aria-live="polite"></div>
+    <div class="wbtiles" id="wbtiles" role="group" aria-label="Letter tiles"></div>
+    <div class="brow">
+      <button class="btn" onclick="wbDelete()">Delete</button>
+      <button class="btn" onclick="wbClear()">Clear</button>
+      <button class="btn bgreen" onclick="wbSubmit()">Submit word</button>
+    </div>
+    <div class="brow"><button class="btn bamber" onclick="initWords()">New letters</button></div>
+    <div id="wb-msg" class="msg" role="alert" aria-live="polite"></div>
+    <div class="wbfound" id="wbfound" aria-live="polite"></div>
+  </section>
+
+  <!-- WORD SEARCH -->
+  <section id="panel-wordsearch" class="panel" aria-label="Word Search">
+    <h2 class="ptitle">Word Search</h2>
+    <p class="psub">Find all the hidden words in the grid</p>
+    <div class="instr"><strong>How to play:</strong> Find each word from the list by clicking the FIRST letter of the word, then clicking the LAST letter. Words go across or down. Found words will turn green!</div>
+    <div class="stats">
+      <div class="stat"><div class="snum" id="ws-found">0</div><div class="slbl">Found</div></div>
+      <div class="stat"><div class="snum" id="ws-total">0</div><div class="slbl">Total words</div></div>
+    </div>
+    <div class="wswordlist" id="wswordlist" role="list" aria-label="Words to find"></div>
+    <div style="overflow-x:auto;text-align:center;">
+      <div class="wsgrid" id="wsgrid" role="grid"></div>
+    </div>
+    <div class="brow"><button class="btn bgreen" onclick="initWS()">New puzzle</button></div>
+    <div id="ws-msg" class="msg" role="alert" aria-live="polite"></div>
+  </section>
+
+  <!-- PATTERN MEMORY -->
+  <section id="panel-pattern" class="panel" aria-label="Pattern Memory">
+    <h2 class="ptitle">Pattern Memory</h2>
+    <p class="psub">Watch the pattern light up, then repeat it back</p>
+    <div class="instr"><strong>How to play:</strong> Squares will light up in orange one by one. When it says "Your turn", click the squares in the SAME ORDER you saw them light up. Each round gets one step longer!</div>
+    <div class="stats">
+      <div class="stat"><div class="snum" id="pm-level">1</div><div class="slbl">Level</div></div>
+      <div class="stat"><div class="snum" id="pm-best">0</div><div class="slbl">Best level</div></div>
+    </div>
+    <div class="pmphase" id="pmphase">Press Start to begin!</div>
+    <div class="pmgrid" id="pmgrid" role="grid" aria-label="Pattern squares"></div>
+    <div class="brow"><button class="btn bgreen" onclick="pmStart()">Start / Next round</button></div>
+    <div id="pm-msg" class="msg" role="alert" aria-live="polite"></div>
+  </section>
+
+  <!-- CROSSWORD -->
+  <section id="panel-crossword" class="panel" aria-label="Crossword">
+    <h2 class="ptitle">Crossword</h2>
+    <p class="psub">Seasons and nature theme</p>
+    <div class="instr"><strong>How to play:</strong> Read the clues below and fill in the white squares. Click a square and type a letter. Use the arrow keys to move between squares. Press Check when you are ready!</div>
+    <div style="overflow-x:auto;text-align:left;margin-bottom:1.1rem;">
+      <div class="cwgrid" id="cwgrid" style="grid-template-columns:repeat(7,36px);grid-template-rows:repeat(7,36px)" role="grid"></div>
+    </div>
+    <div class="brow">
+      <button class="btn" onclick="clearCW()">Clear all</button>
+      <button class="btn bgreen" onclick="checkCW()">Check answers</button>
+    </div>
+    <div id="cw-msg" class="msg" role="alert" aria-live="polite"></div>
+    <div class="clues">
+      <div class="cgrp"><h3>Across</h3>
+        <div class="ci"><span>1.</span> Warm season after spring (6)</div>
+        <div class="ci"><span>4.</span> Frozen water that falls from clouds (4)</div>
+        <div class="ci"><span>6.</span> A flower's colorful part (5)</div>
+      </div>
+      <div class="cgrp"><h3>Down</h3>
+        <div class="ci"><span>1.</span> Bright star in our solar system (3)</div>
+        <div class="ci"><span>2.</span> Season when leaves fall (4)</div>
+        <div class="ci"><span>3.</span> Water drops that fall from clouds (4)</div>
+        <div class="ci"><span>5.</span> Green plant part (4)</div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <p><strong>Mind Garden</strong> -- Created by Aliyna Issac &middot; Seniors in STEM x SAIVA</p>
+  <p style="margin-top:.35rem;">Completely free. No login needed. Share the link with anyone!</p>
+</footer>
+<script>
+// ACCESSIBILITY
+function toggleLarge(){var on=document.body.classList.toggle('large');var b=document.getElementById('btn-large');b.setAttribute('aria-pressed',on);b.classList.toggle('on',on);}
+function toggleHC(){var on=document.body.classList.toggle('hc');var b=document.getElementById('btn-hc');b.setAttribute('aria-pressed',on);b.classList.toggle('on',on);}
+
+// NAV
+function showGame(id,el){
+  document.querySelectorAll('.gnb').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+  el.classList.add('active');
+  var panel=document.getElementById('panel-'+id);
+  panel.classList.add('active');
+  setTimeout(function(){panel.scrollIntoView({behavior:'smooth',block:'nearest'});},60);
+}
+function showMsg(id,type,text){var el=document.getElementById(id);el.className='msg '+type+' show';el.textContent=text;}
+function hideMsg(id){var el=document.getElementById(id);el.className='msg';el.textContent='';}
+
+// SUDOKU
+var SU_PUZ=[[6,0,0,2,5,0,0,0,0],[0,5,1,0,4,0,9,0,3],[2,0,9,0,0,0,0,0,0],[8,1,0,0,2,5,3,0,0],[3,0,5,0,0,0,6,0,9],[0,0,7,1,3,0,0,8,5],[0,0,4,0,0,0,8,0,7],[5,0,8,0,6,0,4,9,0],[0,0,0,0,8,3,0,0,6]];
+var SU_SOL=[[6,7,3,2,5,9,1,4,8],[4,5,1,8,4,6,9,7,3],[2,8,9,3,1,4,5,6,7],[8,1,6,9,2,5,3,7,4],[3,4,5,7,8,1,6,2,9],[9,2,7,1,3,6,2,8,5],[1,6,4,5,9,2,8,3,7],[5,3,8,6,6,7,4,9,2],[7,9,2,4,8,3,7,1,6]];
+var suGrid=[],suSel=null,suBlanks=0;
+function suCountBlanks(){var n=0;for(var r=0;r<9;r++)for(var c=0;c<9;c++)if(SU_PUZ[r][c]===0)n++;return n;}
+function initSudoku(){
+  suGrid=SU_PUZ.map(function(r){return r.slice();});suBlanks=suCountBlanks();suSel=null;
+  var g=document.getElementById('sugrid');g.innerHTML='';
+  for(var r=0;r<9;r++){
+    for(var c=0;c<9;c++){
+      var cell=document.createElement('button');cell.className='sc';
+      if(SU_PUZ[r][c]!==0){cell.textContent=SU_PUZ[r][c];cell.classList.add('given');cell.disabled=true;}
+      else{cell.tabIndex=0;}
+      if((c+1)%3===0&&c<8)cell.classList.add('br');
+      if((r+1)%3===0&&r<8)cell.classList.add('bb');
+      cell.dataset.r=r;cell.dataset.c=c;
+      cell.addEventListener('click',function(){suPick(this);});
+      cell.addEventListener('keydown',function(e){if(e.key>='1'&&e.key<='9')suEnter(+e.key);if(e.key==='Delete'||e.key==='Backspace')suEnter(0);});
+      g.appendChild(cell);
+    }
+  }
+  var np=document.getElementById('numpad');np.innerHTML='';
+  for(var i=1;i<=9;i++){
+    (function(n){var b=document.createElement('button');b.className='np';b.textContent=n;b.setAttribute('aria-label','Number '+n);b.addEventListener('click',function(){suEnter(n);});np.appendChild(b);})(i);
+  }
+  var clrb=document.createElement('button');clrb.className='np';clrb.textContent='X';clrb.setAttribute('aria-label','Clear cell');clrb.addEventListener('click',function(){suEnter(0);});np.appendChild(clrb);
+  hideMsg('su-msg');suUpdProg();
+}
+function suPick(el){if(el.classList.contains('given'))return;document.querySelectorAll('.sc').forEach(function(c){c.classList.remove('sel');});el.classList.add('sel');suSel=el;el.focus();}
+function suEnter(n){if(!suSel)return;var r=+suSel.dataset.r,c=+suSel.dataset.c;suGrid[r][c]=n;suSel.textContent=n||'';suSel.classList.remove('err');suUpdProg();}
+function clearSudoku(){initSudoku();}
+function checkSudoku(){
+  var ok=0,tot=0;
+  document.querySelectorAll('.sc:not(.given)').forEach(function(cell){
+    var r=+cell.dataset.r,c=+cell.dataset.c;
+    if(suGrid[r][c]!==0){tot++;if(suGrid[r][c]===SU_SOL[r][c]){ok++;cell.classList.remove('err');}else{cell.classList.add('err');}}
+  });
+  if(tot===0){showMsg('su-msg','no','Select a blank square then tap a number below to start!');return;}
+  if(ok===tot)showMsg('su-msg','ok','Great work! All '+ok+' filled cells are correct!');
+  else showMsg('su-msg','no',ok+' correct, '+(tot-ok)+' to fix. Wrong cells are shown in red.');
+}
+function suUpdProg(){
+  var f=0;
+  for(var r=0;r<9;r++)for(var c=0;c<9;c++)if(SU_PUZ[r][c]===0&&suGrid[r][c]!==0)f++;
+  var p=Math.round(f/suBlanks*100);
+  document.getElementById('su-pg').style.width=p+'%';
+  document.getElementById('su-lbl').textContent='Progress: '+f+' of '+suBlanks+' filled';
+}
+initSudoku();
+
+// MEMORY MATCH
+var MEM_SYMS=['🌸','🦋','🍎','🌙','⭐','🎵','🐦','🌺'];
+var mFlipped=[],mMatched=[],mMoves=0,mLock=false,mBest=null;
+function initMemory(){
+  mFlipped=[];mMatched=[];mMoves=0;mLock=false;
+  document.getElementById('mem-moves').textContent='0';
+  document.getElementById('mem-pairs').textContent='0';
+  hideMsg('mem-msg');
+  var deck=MEM_SYMS.concat(MEM_SYMS);deck.sort(function(){return Math.random()-.5;});
+  var g=document.getElementById('mgrid');g.innerHTML='';
+  deck.forEach(function(sym,i){
+    var c=document.createElement('button');c.className='mc fd';c.dataset.val=sym;
+    c.innerHTML=sym;c.setAttribute('aria-label','Card '+(i+1)+', face down');
+    c.addEventListener('click',function(){mFlip(this);});
+    g.appendChild(c);
+  });
+}
+function mFlip(el){
+  if(mLock||el.classList.contains('matched')||el.classList.contains('fu'))return;
+  el.classList.remove('fd');el.classList.add('fu');
+  el.setAttribute('aria-label','Card showing '+el.dataset.val);
+  mFlipped.push(el);
+  if(mFlipped.length===2){
+    mMoves++;document.getElementById('mem-moves').textContent=mMoves;mLock=true;
+    if(mFlipped[0].dataset.val===mFlipped[1].dataset.val){
+      mFlipped[0].classList.add('matched');mFlipped[1].classList.add('matched');
+      mMatched.push(mFlipped[0].dataset.val);
+      document.getElementById('mem-pairs').textContent=mMatched.length;
+      mFlipped=[];mLock=false;
+      if(mMatched.length===MEM_SYMS.length){
+        if(mBest===null||mMoves<mBest){mBest=mMoves;document.getElementById('mem-best').textContent=mBest;}
+        showMsg('mem-msg','ok','You found all pairs in '+mMoves+' moves!'+(mBest===mMoves?' New best!':''));
+      }
+    } else {
+      var f=mFlipped.slice();
+      setTimeout(function(){
+        f[0].classList.remove('fu');f[0].classList.add('fd');
+        f[1].classList.remove('fu');f[1].classList.add('fd');
+        f[0].setAttribute('aria-label','Card face down');f[1].setAttribute('aria-label','Card face down');
+        mFlipped=[];mLock=false;
+      },1000);
+    }
+  }
+}
+initMemory();
+
+// TRIVIA
+var TV_QS=[
+  {q:"What planet is known as the Red Planet?",o:["Mars","Venus","Jupiter","Saturn"],a:0},
+  {q:"Which US state is called the Sunshine State?",o:["California","Hawaii","Florida","Arizona"],a:2},
+  {q:"How many sides does a hexagon have?",o:["Five","Six","Seven","Eight"],a:1},
+  {q:"What gas do plants absorb to make food?",o:["Oxygen","Nitrogen","Carbon dioxide","Hydrogen"],a:2},
+  {q:"Who painted the Mona Lisa?",o:["Michelangelo","Leonardo da Vinci","Rembrandt","Picasso"],a:1},
+  {q:"What is the largest organ in the human body?",o:["Heart","Brain","Liver","Skin"],a:3},
+  {q:"What year did the first man walk on the moon?",o:["1965","1967","1969","1971"],a:2},
+  {q:"Which bird is famous for its colorful fanned tail?",o:["Peacock","Parrot","Flamingo","Toucan"],a:0},
+  {q:"How many players from one team are on a basketball court?",o:["4","5","6","7"],a:1},
+  {q:"What is the tallest mountain in the world?",o:["K2","Kilimanjaro","Everest","Denali"],a:2},
+  {q:"In what country was the Eiffel Tower built?",o:["Italy","Spain","France","Germany"],a:2},
+  {q:"What instrument does an orchestra conductor use to lead?",o:["A baton","Drumsticks","A bow","Their voice"],a:0}
+];
+var tvIdx=0,tvScore=0,tvStreak=0,tvAnswered=false;
+function loadTrivia(){
+  if(tvIdx>=TV_QS.length){showMsg('tv-msg','ok','You finished all '+TV_QS.length+' questions! Final score: '+tvScore+'/'+TV_QS.length+'. Well done!');document.getElementById('tv-next').style.display='none';return;}
+  tvAnswered=false;
+  var q=TV_QS[tvIdx];
+  document.getElementById('tv-ctr').textContent='Question '+(tvIdx+1)+' of '+TV_QS.length;
+  document.getElementById('tv-q').textContent=q.q;
+  document.getElementById('tv-pg').style.width=Math.round(tvIdx/TV_QS.length*100)+'%';
+  document.getElementById('tv-pglbl').textContent=tvIdx+' of '+TV_QS.length+' answered';
+  var opts=document.getElementById('tv-opts');opts.innerHTML='';
+  q.o.forEach(function(opt,i){
+    var b=document.createElement('button');b.className='opt';b.textContent=opt;
+    b.addEventListener('click',function(){tvAnswer(i,b,q.a);});
+    opts.appendChild(b);
+  });
+  hideMsg('tv-msg');document.getElementById('tv-next').style.display='none';
+}
+function tvAnswer(chosen,btn,correct){
+  if(tvAnswered)return;tvAnswered=true;
+  document.getElementById('tv-opts').querySelectorAll('.opt').forEach(function(b,i){b.disabled=true;if(i===correct)b.classList.add('correct');});
+  if(chosen===correct){tvScore++;tvStreak++;showMsg('tv-msg','ok','Correct! Well done.');}
+  else{tvStreak=0;btn.classList.add('wrong');showMsg('tv-msg','no','Not quite -- the answer was: '+TV_QS[tvIdx].o[correct]);}
+  document.getElementById('tv-score').textContent=tvScore;
+  document.getElementById('tv-streak').textContent=tvStreak;
+  document.getElementById('tv-next').style.display='inline-flex';
+}
+function nextTrivia(){tvIdx++;loadTrivia();}
+loadTrivia();
+
+// MATH
+var mathDiff='easy',mathScore=0,mathStreak=0,mathBest=0,mathAns=0;
+function setDiff(d,el){
+  mathDiff=d;
+  document.querySelectorAll('.diffbtn').forEach(function(b){b.classList.remove('on');});
+  el.classList.add('on');loadMath();
+}
+function loadMath(){
+  hideMsg('math-msg');document.getElementById('math-inp').value='';
+  var a,b,op,ans;
+  if(mathDiff==='easy'){
+    a=Math.floor(Math.random()*10)+1;b=Math.floor(Math.random()*10)+1;
+    op=Math.random()>.5?'+':'-';
+    if(op==='-'&&b>a){var t=a;a=b;b=t;}
+    ans=op==='+'?a+b:a-b;
+  } else if(mathDiff==='medium'){
+    a=Math.floor(Math.random()*9)+2;b=Math.floor(Math.random()*9)+2;
+    if(Math.random()>.5){op='x';ans=a*b;}else{ans=Math.floor(Math.random()*8)+2;a=ans*b;op='->';}
+    if(op==='->'){op='/';}
+  } else {
+    var rn=Math.random();
+    if(rn<.5){a=Math.floor(Math.random()*50)+10;b=Math.floor(Math.random()*50)+10;op='+';ans=a+b;}
+    else{a=Math.floor(Math.random()*9)+2;b=Math.floor(Math.random()*9)+2;op='x';ans=a*b;}
+  }
+  mathAns=ans;
+  var opDisp=op==='x'?'times':op==='/'?'divided by':op;
+  document.getElementById('math-eq').innerHTML=a+' <span class="mathop">'+op+'</span> '+b+' = <span class="mathb">?</span>';
+  setTimeout(function(){document.getElementById('math-inp').focus();},80);
+}
+function checkMath(){
+  var v=parseInt(document.getElementById('math-inp').value);
+  if(isNaN(v)){showMsg('math-msg','no','Please type a number first.');return;}
+  if(v===mathAns){
+    mathScore++;mathStreak++;
+    if(mathStreak>mathBest){mathBest=mathStreak;document.getElementById('math-best').textContent=mathBest;}
+    document.getElementById('math-score').textContent=mathScore;
+    document.getElementById('math-streak').textContent=mathStreak;
+    showMsg('math-msg','ok','Correct! The answer is '+mathAns+'.');
+    setTimeout(loadMath,1300);
+  } else {
+    mathStreak=0;document.getElementById('math-streak').textContent=0;
+    showMsg('math-msg','no','Not quite -- the answer was '+mathAns+'. Try the next one!');
+    setTimeout(loadMath,1800);
+  }
+}
+function skipMath(){showMsg('math-msg','no','The answer was '+mathAns+'.');mathStreak=0;document.getElementById('math-streak').textContent=0;setTimeout(loadMath,1300);}
+document.getElementById('math-inp').addEventListener('keydown',function(e){if(e.key==='Enter')checkMath();});
+loadMath();
+
+// WORD BUILDER
+var WB_SETS=[
+  {letters:['G','A','R','D','E','N','S'],words:['GARDEN','ANGER','RANGE','GRADE','DEAR','EARN','NEAR','READ','DEAN','DARE','DENS','ENDS','SEND','GEAR','AGES','REND','SANER','READS','GRADS','AND','END','RED','ERA','ARE','EAR','AGE','DEN','RAN','GAN','GAS','SAD','ANS']},
+  {letters:['S','P','R','I','N','G','E'],words:['SPRING','SINGER','RINSE','RISEN','SPINE','REINS','SNIPE','PINE','RIPE','GRIN','PINS','SPIN','GRIP','SIREN','GRIPE','PINES','REIGN','PEN','PIN','RIP','GIN','PIG','SIP','SIN','IRE','RIN','PRIG','SNIP','RINS']},
+  {letters:['F','L','O','W','E','R','S'],words:['FLOWERS','FOWLER','FLOWER','LOWER','OWLS','LORE','ROLE','ROWS','FLOW','FLEW','SLOW','WOLF','SOLE','LOSE','FOWL','OWL','ROW','LOW','OWE','FOR','ORE','FOE','SOW','FOW','LOWS','OWES','FOES','LORE','WORE','WOES']},
+  {letters:['B','R','A','I','N','S','E'],words:['BRAINS','BRINE','BRAIN','RISEN','REINS','RAINS','SIREN','BARE','EARN','NEAR','RAIN','BRAN','SANE','SINE','BEAR','RAISE','BANES','BASER','BAN','BAR','BIN','RAN','RIN','ANE','AIR','RANI','AIRS','BANE','BINS','BARS']}
+];
+var wbCur='',wbUsed=[],wbFound=[],wbPts=0,wbSet=null,wbLetters=[];
+function initWords(){
+  wbSet=WB_SETS[Math.floor(Math.random()*WB_SETS.length)];
+  wbLetters=wbSet.letters.slice();wbCur='';wbUsed=[];wbFound=[];wbPts=0;
+  document.getElementById('wb-words').textContent='0';
+  document.getElementById('wb-pts').textContent='0';
+  document.getElementById('wbfound').innerHTML='';
+  document.getElementById('wbcur').textContent='';
+  hideMsg('wb-msg');
+  var cont=document.getElementById('wbtiles');cont.innerHTML='';
+  wbLetters.forEach(function(l,i){
+    var b=document.createElement('button');b.className='wbl';b.textContent=l;b.dataset.idx=i;
+    b.setAttribute('aria-label','Letter '+l);
+    b.addEventListener('click',function(){wbAdd(+this.dataset.idx,this);});
+    cont.appendChild(b);
+  });
+}
+function wbAdd(idx,el){
+  if(wbUsed.indexOf(idx)!==-1)return;
+  wbUsed.push(idx);wbCur+=wbLetters[idx];
+  el.classList.add('used');el.disabled=true;
+  document.getElementById('wbcur').textContent=wbCur;
+}
+function wbDelete(){
+  if(!wbCur)return;
+  var li=wbUsed.pop();wbCur=wbCur.slice(0,-1);
+  document.getElementById('wbcur').textContent=wbCur;
+  var tiles=document.getElementById('wbtiles').querySelectorAll('.wbl');
+  tiles[li].classList.remove('used');tiles[li].disabled=false;
+}
+function wbClear(){
+  wbCur='';wbUsed=[];
+  document.getElementById('wbcur').textContent='';
+  document.getElementById('wbtiles').querySelectorAll('.wbl').forEach(function(b){b.classList.remove('used');b.disabled=false;});
+}
+function wbSubmit(){
+  var w=wbCur.toUpperCase();
+  if(w.length<3){showMsg('wb-msg','no','Words must be at least 3 letters long.');wbClear();return;}
+  if(wbFound.indexOf(w)!==-1){showMsg('wb-msg','no','You already found "'+w+'" -- try another word!');wbClear();return;}
+  var valid=wbSet.words.map(function(x){return x.toUpperCase();}).indexOf(w)!==-1;
+  if(valid){
+    wbFound.push(w);
+    var pts=w.length*(w.length>5?2:1);wbPts+=pts;
+    document.getElementById('wb-words').textContent=wbFound.length;
+    document.getElementById('wb-pts').textContent=wbPts;
+    showMsg('wb-msg','ok','"'+w+'" is correct! +'+pts+' points'+(w.length>5?' -- bonus for long word!':'')+'.');
+    var tag=document.createElement('span');tag.className='wbword';tag.textContent=w;
+    document.getElementById('wbfound').appendChild(tag);
+  } else {
+    showMsg('wb-msg','no','"'+w+'" is not in the list -- try a different combination!');
+  }
+  wbClear();
+}
+initWords();
+
+// WORD SEARCH
+var WS_WORDSETS=[
+  ['SPRING','BLOOM','GARDEN','RAIN','SUN','BIRD','LEAF'],
+  ['WINTER','SNOW','FROST','COLD','ICE','WIND','CLOUD'],
+  ['SUMMER','BEACH','SWIM','HEAT','SAND','WAVE','FISH'],
+  ['AUTUMN','APPLE','MAPLE','BROWN','GOLD','MIST','WOOD']
+];
+var wsFoundWords=[],wsPlaced=[],wsGridData=[],wsSize=9,wsFirst=null,wsAllCells=[];
+function initWS(){
+  wsFoundWords=[];wsFirst=null;hideMsg('ws-msg');
+  var wordList=WS_WORDSETS[Math.floor(Math.random()*WS_WORDSETS.length)];
+  var result=buildWS(wordList,wsSize);
+  wsGridData=result.grid;wsPlaced=result.placed;
+  document.getElementById('ws-found').textContent='0';
+  document.getElementById('ws-total').textContent=wsPlaced.length;
+  renderWSWordList();renderWSGrid();
+}
+function buildWS(words,n){
+  var grid=[];for(var r=0;r<n;r++){grid.push([]);for(var c=0;c<n;c++)grid[r].push('');}
+  var placed=[];
+  words.forEach(function(word){
+    var dirs=[[0,1],[1,0]];
+    for(var att=0;att<300;att++){
+      var d=dirs[Math.floor(Math.random()*2)];
+      var r=Math.floor(Math.random()*n);var c=Math.floor(Math.random()*n);
+      var fits=true;
+      for(var i=0;i<word.length;i++){
+        var nr=r+d[0]*i;var nc=c+d[1]*i;
+        if(nr<0||nr>=n||nc<0||nc>=n){fits=false;break;}
+        if(grid[nr][nc]!==''&&grid[nr][nc]!==word[i]){fits=false;break;}
+      }
+      if(fits){
+        for(var i=0;i<word.length;i++)grid[r+d[0]*i][c+d[1]*i]=word[i];
+        placed.push({word:word,r:r,c:c,dr:d[0],dc:d[1]});break;
+      }
+    }
+  });
+  var alpha='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  for(var r=0;r<n;r++)for(var c=0;c<n;c++)if(grid[r][c]==='')grid[r][c]=alpha[Math.floor(Math.random()*26)];
+  return{grid:grid,placed:placed};
+}
+function renderWSWordList(){
+  var cont=document.getElementById('wswordlist');cont.innerHTML='';
+  wsPlaced.forEach(function(w){
+    var s=document.createElement('span');s.className='wsword';s.textContent=w.word;s.id='wswrd-'+w.word;s.setAttribute('role','listitem');
+    cont.appendChild(s);
+  });
+}
+function renderWSGrid(){
+  var g=document.getElementById('wsgrid');g.innerHTML='';
+  g.style.gridTemplateColumns='repeat('+wsSize+',33px)';
+  g.style.gridTemplateRows='repeat('+wsSize+',33px)';
+  wsAllCells=[];
+  for(var r=0;r<wsSize;r++){
+    for(var c=0;c<wsSize;c++){
+      var cell=document.createElement('div');cell.className='wscell';cell.textContent=wsGridData[r][c];
+      cell.dataset.r=r;cell.dataset.c=c;cell.setAttribute('role','gridcell');
+      cell.addEventListener('click',function(){wsClick(this);});
+      g.appendChild(cell);wsAllCells.push(cell);
+    }
+  }
+}
+function wsClick(el){
+  if(el.classList.contains('found'))return;
+  if(!wsFirst){wsFirst=el;el.classList.add('sel');showMsg('ws-msg','ok','First letter selected! Now click the last letter of the word.');return;}
+  var r1=+wsFirst.dataset.r,c1=+wsFirst.dataset.c;
+  var r2=+el.dataset.r,c2=+el.dataset.c;
+  wsFirst.classList.remove('sel');wsFirst=null;
+  var matched=null;
+  wsPlaced.forEach(function(w){
+    if(wsFoundWords.indexOf(w.word)!==-1)return;
+    var er=w.r+w.dr*(w.word.length-1),ec=w.c+w.dc*(w.word.length-1);
+    if((r1===w.r&&c1===w.c&&r2===er&&c2===ec)||(r2===w.r&&c2===w.c&&r1===er&&c1===ec))matched=w;
+  });
+  if(matched){
+    wsFoundWords.push(matched.word);
+    for(var i=0;i<matched.word.length;i++){
+      var tr=matched.r+matched.dr*i,tc=matched.c+matched.dc*i;
+      wsAllCells[tr*wsSize+tc].classList.add('found');
+    }
+    var wEl=document.getElementById('wswrd-'+matched.word);if(wEl)wEl.classList.add('found');
+    document.getElementById('ws-found').textContent=wsFoundWords.length;
+    if(wsFoundWords.length===wsPlaced.length)showMsg('ws-msg','ok','You found all the words! Amazing work!');
+    else showMsg('ws-msg','ok','Found "'+matched.word+'"! Keep going!');
+  } else {
+    showMsg('ws-msg','no','That is not a match. Click the FIRST letter of a word, then the LAST letter.');
+  }
+}
+initWS();
+
+// PATTERN MEMORY
+var pmSeq=[],pmPlayer=[],pmLevel=1,pmBest=0,pmCanClick=false,pmCells=[];
+function initPattern(){
+  var g=document.getElementById('pmgrid');g.innerHTML='';pmCells=[];
+  for(var i=0;i<9;i++){
+    var c=document.createElement('button');c.className='pmcell';c.dataset.i=i;
+    c.setAttribute('aria-label','Square '+(i+1));
+    c.addEventListener('click',function(){pmPress(+this.dataset.i,this);});
+    g.appendChild(c);pmCells.push(c);
+  }
+}
+function pmStart(){
+  if(pmSeq.length===0){pmLevel=1;pmSeq=[];document.getElementById('pm-level').textContent=1;}
+  pmPlayer=[];pmSeq.push(Math.floor(Math.random()*9));
+  document.getElementById('pmphase').textContent='Watch carefully...';
+  document.getElementById('pm-level').textContent=pmLevel;
+  pmCanClick=false;hideMsg('pm-msg');
+  var i=0;
+  function next(){
+    if(i>=pmSeq.length){pmCanClick=true;document.getElementById('pmphase').textContent='Your turn! Repeat the pattern.';return;}
+    var ci=pmSeq[i];
+    pmCells[ci].classList.add('lit');
+    setTimeout(function(){pmCells[ci].classList.remove('lit');i++;setTimeout(next,320);},580);
+  }
+  setTimeout(next,500);
+}
+function pmPress(idx,el){
+  if(!pmCanClick)return;
+  el.classList.add('pressed');setTimeout(function(){el.classList.remove('pressed');},240);
+  pmPlayer.push(idx);
+  var pos=pmPlayer.length-1;
+  if(pmPlayer[pos]!==pmSeq[pos]){
+    pmCanClick=false;
+    pmCells[idx].classList.add('wflash');
+    setTimeout(function(){pmCells[idx].classList.remove('wflash');},400);
+    if(pmLevel>pmBest){pmBest=pmLevel-1;if(pmBest<1)pmBest=1;document.getElementById('pm-best').textContent=pmBest;}
+    showMsg('pm-msg','no','Wrong square! You reached level '+pmLevel+'. Press Start to try again!');
+    document.getElementById('pmphase').textContent='Game over. Press Start to play again!');
+    pmSeq=[];pmLevel=1;document.getElementById('pm-level').textContent=1;
+    return;
+  }
+  if(pmPlayer.length===pmSeq.length){
+    pmCanClick=false;
+    pmCells.forEach(function(c){c.classList.add('cflash');});
+    setTimeout(function(){
+      pmCells.forEach(function(c){c.classList.remove('cflash');});
+      pmLevel++;
+      document.getElementById('pm-level').textContent=pmLevel;
+      showMsg('pm-msg','ok','Well done! Level '+pmLevel+' -- press Start for the next round!');
+      document.getElementById('pmphase').textContent='Correct! Press Start for the next round.';
+    },400);
+  }
+}
+initPattern();
+
+// CROSSWORD
+var CW=[['S','U','M','M','E','R','.'],['.','.','.','.','.','.','.'],['.','.','.','.','.','.','.'],['.','.','.','.','.','.','.'],['.','.','S','N','O','W','.'],['.','.','.','.','.','.','.'],['.','.','P','E','T','A','L']];
+// Down: SUN col0 rows0-2, FALL col1 rows0-3, RAIN col6 rows0-3, LEAF col3 rows4-6
+// Actually build correct layout
+var CW7=[
+  ['S','U','M','M','E','R','.'],
+  ['U','A','.','.','.','.','.'],
+  ['N','L','.','.','.','.','.'],
+  ['.','L','.','.','.','.','R'],
+  ['.','.','S','N','O','W','A'],
+  ['.','.','.','.','.','.','I'],
+  ['.','.','P','E','T','A','N']
+];
+var CW_NUMS={'0-0':'1','0-1':'2','0-5':'3','0-6':'4','4-2':'5','6-2':'6','4-5':'7'};
+// Simpler crossword -- verified layout
+// SUMMER across row 0
+// SUN down col 0 rows 0-2
+// SNOW across row 4 cols 2-5
+// PETAL across row 6 cols 2-6
+// FALL down col 1 rows 0-3
+// RAIN down col 6 rows 3-6
+var CWFINAL=[
+  ['S','U','M','M','E','R','.'],
+  ['U','A','.','.','.','.','.'],
+  ['N','L','.','.','.','.','.'],
+  ['.','L','.','.','.','.','R'],
+  ['.','.','S','N','O','W','A'],
+  ['.','.','.','.','.','.','I'],
+  ['.','.','P','E','T','A','N']
+];
+var CWNUMS={'0-0':'1','0-1':'2','0-5':'3','0-6':'4','4-2':'5','6-2':'6'};
+function initCW(){
+  var g=document.getElementById('cwgrid');g.innerHTML='';
+  for(var r=0;r<7;r++){
+    for(var c=0;c<7;c++){
+      var cell=document.createElement('div');cell.className='cwc';
+      if(CWFINAL[r][c]==='.'){cell.classList.add('black');cell.setAttribute('aria-hidden','true');}
+      else{
+        var inp=document.createElement('input');inp.maxLength=1;inp.dataset.r=r;inp.dataset.c=c;inp.dataset.ans=CWFINAL[r][c];
+        inp.setAttribute('aria-label','Row '+(r+1)+' col '+(c+1));
+        inp.addEventListener('input',function(){this.value=this.value.toUpperCase().slice(-1);this.classList.remove('ok','bad');});
+        inp.addEventListener('keydown',function(e){
+          var nr=+this.dataset.r,nc=+this.dataset.c;
+          var navMap={ArrowRight:[nr,nc+1],ArrowLeft:[nr,nc-1],ArrowDown:[nr+1,nc],ArrowUp:[nr-1,nc]};
+          if(navMap[e.key]){var n=document.querySelector('input[data-r="'+navMap[e.key][0]+'"][data-c="'+navMap[e.key][1]+'"]');if(n){e.preventDefault();n.focus();}}
+        });
+        cell.appendChild(inp);
+        var k=r+'-'+c;
+        if(CWNUMS[k]){var num=document.createElement('span');num.className='cwnum';num.textContent=CWNUMS[k];num.setAttribute('aria-hidden','true');cell.appendChild(num);}
+      }
+      g.appendChild(cell);
+    }
+  }
+}
+function clearCW(){document.querySelectorAll('.cwc input').forEach(function(i){i.value='';i.classList.remove('ok','bad');});hideMsg('cw-msg');}
+function checkCW(){
+  var ok=0,tot=0;
+  document.querySelectorAll('.cwc input').forEach(function(inp){
+    if(!inp.value)return;tot++;
+    if(inp.value.toUpperCase()===inp.dataset.ans){inp.classList.add('ok');inp.classList.remove('bad');ok++;}
+    else{inp.classList.add('bad');inp.classList.remove('ok');}
+  });
+  if(tot===0){showMsg('cw-msg','no','Click a white square and type a letter to begin!');return;}
+  if(ok===tot)showMsg('cw-msg','ok','All your filled letters are correct! Keep going!');
+  else showMsg('cw-msg','no',ok+' correct, '+(tot-ok)+' to fix. Wrong letters are shown in red.');
+}
+initCW();
+</script>
+</body>
+</html>
